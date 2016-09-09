@@ -1,23 +1,33 @@
-var http = require('http');
-var fs = require('fs');
+var express = require("express");
+var http = require("http");
+var app = express();
+var server = http.createServer(app).listen(3000);
+var io = require("socket.io")(server);
 
-// 404 Response
-function send404Response (response) {
-    response.writeHead(404, {"Content-Type": "text/plain" });
-    response.wirte("Error mpre!!!!");
-    response.end();
-};
+app.use(express.static("./public"));
 
-// Handle a User Request
-function onRequest(request, response) {
+// Send current time to all connected clients
+function sendTime() {
+    io.emit('time', { time: new Date().toJSON() });
+}
 
-    if ( request.method == 'GET' && request.url == '/') {
-        response.writeHead(200, {"Content-Type": "text/html"});
-        fs.createReadStream("./index.html").pipe(response);
-    }else{
-        send404Response(response);
-    }
-};
+// Send current time every 10 secs
+setInterval(sendTime, 10000);
 
-http.createServer(onRequest).listen(8080);
-console.log("Server is running...");
+// Emit welcome message on connection
+io.on("connection", function(socket) {
+
+    // Use socket to communicate with this particular client only, sending it it's own id
+    socket.emit('welcome', { message: 'Welcome!', id: socket.id });
+
+    socket.on("chat", function(message) {
+        socket.broadcast.emit("message", message);
+    });
+
+    socket.emit("message", "Welcome to Cyber Chat");
+
+    socket.on('i am client', console.log);
+
+});
+
+console.log("Starting Socket App - http://localhost:3000");
