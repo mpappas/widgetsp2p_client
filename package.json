@@ -1,0 +1,25 @@
+{
+  "name": "widgetsp2p_client",
+  "version": "0.0.1",
+  "description": "Client Web Application with Node.js and Express.js.",
+  "author": "Manos Pappas <mano.pappa@gmail.com>",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "uuid": "^2.0.2",
+    "socket.io-client": "^1.3.7"
+  },
+  "scripts": {
+    "start": "node start"
+  },
+  "main": "app.js",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
